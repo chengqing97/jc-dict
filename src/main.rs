@@ -1,26 +1,40 @@
 use colored::*;
 use regex::Regex;
 use reqwest::get;
+use rustyline::error::ReadlineError;
+use rustyline::Editor;
 use std::env::args;
-use std::io::{self, BufRead, Write};
 use urlencoding::encode;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let keywords: Vec<String> = args().collect();
     if keywords.len() <= 1 {
-        print!("~ ");
-        io::stdout().flush().unwrap();
-        let stdin = io::stdin();
-        for line in stdin.lock().lines() {
-            let to_search = &line.unwrap();
-            if to_search != "" {
-                search(to_search).await?;
-                println!("");
-                print!("~ ");
-                io::stdout().flush().unwrap();
+        let mut rl = Editor::<()>::new();
+
+        let history_path = format!(
+            "{}/wd-history.txt",
+            dirs::document_dir().unwrap().to_str().unwrap()
+        );
+
+        rl.load_history(&history_path).ok();
+        loop {
+            let readline = rl.readline("~ ");
+            match readline {
+                Ok(line) => {
+                    rl.add_history_entry(line.as_str());
+                    search(line.as_str()).await?;
+                    println!();
+                }
+                Err(ReadlineError::Interrupted) => break, // ctrl + c
+                Err(ReadlineError::Eof) => break,         // ctrl + d
+                Err(err) => {
+                    println!("Error: {:?}", err);
+                    break;
+                }
             }
         }
+        rl.save_history(&history_path).unwrap();
     } else {
         let to_search = &keywords[1..].join(" ");
         search(&to_search).await?
@@ -28,6 +42,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     Ok(())
 }
+
 async fn search(text: &str) -> Result<(), Box<dyn std::error::Error>> {
     let url = String::from("https://dict.youdao.com/w/") + &encode(text);
 
