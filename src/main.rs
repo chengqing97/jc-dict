@@ -8,16 +8,13 @@ use urlencoding::encode;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let keywords: Vec<String> = args().collect();
-    if keywords.len() <= 1 {
-        let mut rl = Editor::<()>::new();
-
-        let history_path = format!(
-            "{}/wd-history.txt",
-            dirs::document_dir().unwrap().to_str().unwrap()
-        );
-
-        rl.load_history(&history_path).ok();
+    let mut rl = Editor::<()>::new();
+    let history_path = format!(
+        "{}/wd-history.txt",
+        dirs::document_dir().unwrap().to_str().unwrap()
+    );
+    rl.load_history(&history_path).ok();
+    if args().len() <= 1 {
         loop {
             let readline = rl.readline("~ ");
             match readline {
@@ -34,11 +31,13 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
                 }
             }
         }
-        rl.save_history(&history_path).unwrap();
     } else {
-        let to_search = &keywords[1..].join(" ");
-        search(&to_search).await?
+        let keywords: Vec<String> = args().collect();
+        let keywords = &keywords[1..].join(" ");
+        rl.add_history_entry(keywords);
+        search(keywords).await?
     }
+    rl.save_history(&history_path).unwrap();
 
     Ok(())
 }
@@ -96,22 +95,29 @@ fn print_meaning(text: &str) {
         }
         println!("{}", results[1]);
     } else {
-        let meaning_paragraph = Regex::new(r#"<ul>[\s\S]*?</ul>"#)
+        let is_found = Regex::new(r#"<h2 class="wordbook-js">"#)
             .unwrap()
-            .find(text)
-            .map(|x| x.as_str())
-            .unwrap();
-        let mut results = vec![];
-        let reg = Regex::new(r#"<li>[\s\S]*?</li>"#).unwrap();
-        for item in reg.captures_iter(meaning_paragraph) {
-            results.push(
-                item.get(0)
-                    .unwrap()
-                    .as_str()
-                    .replace("<li>", "")
-                    .replace("</li>", ""),
-            );
+            .is_match(text);
+        if is_found {
+            let meaning_paragraph = Regex::new(r#"<ul>[\s\S]*?</ul>"#)
+                .unwrap()
+                .find(text)
+                .map(|x| x.as_str())
+                .unwrap();
+            let mut results = vec![];
+            let reg = Regex::new(r#"<li>[\s\S]*?</li>"#).unwrap();
+            for item in reg.captures_iter(meaning_paragraph) {
+                results.push(
+                    item.get(0)
+                        .unwrap()
+                        .as_str()
+                        .replace("<li>", "")
+                        .replace("</li>", ""),
+                );
+            }
+            println!("{}", results.join("\n"));
+        } else {
+            println!("{}", "No result".red());
         }
-        println!("{}", results.join("\n"));
     }
 }
