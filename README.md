@@ -2,13 +2,14 @@
 
 CLI 有道词典
 
-> Currently only work on Linux
+> Currently only works on Linux
 
 ## Installation
 
 ```
 git clone https://github.com/chengqing97/wd-dict.git
-sudo cp wd-dict/target/release/wd_dict /bin/wd
+sudo cp wd-dict/wd /bin/wd
+rm -rf wd-dict #optional
 ```
 
 ## Usage
@@ -29,3 +30,9 @@ wd
 - [ ] Pronunciation playback
 - [ ] Offline dictionary
 - [ ] Offline dictionary with flag to search online
+
+## Uninstallation
+
+```
+sudo rm /bin/wd
+```
