@@ -27,7 +27,8 @@ wd
 ## To-dos
 
 - [x] Navigate around typed words
-- [ ] Pronunciation playback
+- [x] Pronunciation playback
+- [ ] Pronunciation playback without printing out '1' or '2'
 - [ ] Offline dictionary
 - [ ] Offline dictionary with flag to search online
 
