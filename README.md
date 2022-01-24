@@ -31,7 +31,7 @@ wd
 - [ ] Offline dictionary
 - [ ] Offline dictionary with flag to search online
 
-## Uninstallation
+## Uninstall
 
 ```
 sudo rm /bin/wd
