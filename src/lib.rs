@@ -42,9 +42,6 @@ impl Lookup {
             keyword: Some(String::from(keyword)),
             definition,
             phonetics,
-            // is_translation: Some(is_translation),
-            // uk_pronunciation: None,
-            // us_pronunciation: None,
         }
     }
 
@@ -129,7 +126,7 @@ fn get_definition(body: &str, is_translation: bool) -> Option<String> {
                         .replace("</li>", ""),
                 );
             }
-            Some(results.join("\n"))
+            Some(results.join("\n\r"))
         } else {
             None
         }
@@ -159,12 +156,11 @@ async fn play_pronunciation(keyword: &str, accent: Accent) -> () {
         .unwrap();
 
     let mp3_url = String::from("https://dictionary.cambridge.org/") + mp3_path;
-    // println!("mp3 url: {}", mp3_url);
 
     let (_stream, stream_handle) = OutputStream::try_default().unwrap();
     let resp = get(mp3_url).await.unwrap();
     let cursor = Cursor::new(resp.bytes().await.unwrap()); // Adds Read and Seek to the bytes via Cursor
     let source = Decoder::new(cursor).unwrap(); // Decoder requires it's source to impl both Read and Seek
-    stream_handle.play_raw(source.convert_samples());
+    stream_handle.play_raw(source.convert_samples()).unwrap();
     std::thread::sleep(std::time::Duration::from_secs(2));
 }
