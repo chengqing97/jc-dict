@@ -29,8 +29,13 @@ wd
 - [x] Navigate around typed words
 - [x] Pronunciation playback
 - [ ] Pronunciation playback without printing out '1' or '2'
+- [x] Chinese to English lookup
 - [ ] Offline dictionary
 - [ ] Offline dictionary with flag to search online
+
+## Known issues
+
+- Crash when trying to play pronunciation that it can't find.
 
 ## Uninstall
 
