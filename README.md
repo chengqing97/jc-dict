@@ -31,10 +31,6 @@ wd
 - [x] Navigate around typed words
 - [x] Pronunciation playback
 - [x] Chinese to English lookup
-- [ ] Pronunciation playback without printing out '1' or '2'
-- [ ] Chinese to English lookup
-- [ ] Offline dictionary
-- [ ] Offline dictionary with flag to search online
 
 ## Known issues
 - <s>Crash when trying to play pronunciation that it can't find.</s> Fixed
