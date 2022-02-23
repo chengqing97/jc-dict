@@ -129,6 +129,8 @@ wd
 Quick search: 
 wd word you want to search
 
+Send '1' or '2' to play pronunciation after searching something in interactive mode
+
 Flags:
 -h --help     Show help message
 -v --version  Show version
