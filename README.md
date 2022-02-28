@@ -7,11 +7,8 @@ CLI 有道词典
 ## Installation
 
 ```
-git clone https://github.com/chengqing97/wd-dict.git
-sudo cp wd-dict/wd /bin/wd
-
-# optional
-rm -rf wd-dict
+curl -L -o wd https://github.com/chengqing97/wd-dict/raw/main/wd
+sudo mv wd /bin/wd
 ```
 
 ## Usage
