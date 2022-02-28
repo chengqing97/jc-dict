@@ -25,6 +25,7 @@ or interactive mode
 ```
 wd
 ```
+Send '1' or '2' after searching something in interactive mode to play pronunciation.
 
 ## To-dos
 
