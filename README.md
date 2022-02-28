@@ -7,8 +7,7 @@ CLI 有道词典
 ## Installation
 
 ```
-curl -L -o wd https://github.com/chengqing97/wd-dict/raw/main/wd
-sudo mv wd /bin/wd
+curl -L -o wd https://github.com/chengqing97/wd-dict/raw/main/wd && chmod +x wd && sudo mv wd /bin/wd
 ```
 
 ## Usage
