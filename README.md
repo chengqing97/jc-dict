@@ -7,7 +7,7 @@ CLI 有道词典
 ## Installation
 
 ```
-curl -L -o wd https://github.com/chengqing97/wd-dict/raw/main/wd && chmod +x wd && sudo mv wd /bin/wd && printf "wd-dict has been successfully installed! \nType 'wd' to start.\n"
+git clone https://github.com/chengqing97/wd-dict.git && ./wd-dict/install.sh
 ```
 
 ## Usage
