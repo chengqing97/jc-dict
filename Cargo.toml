@@ -1,6 +1,6 @@
 [package]
 name = "wd_dict"
-version = "0.3.0"
+version = "0.3.1"
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
@@ -10,5 +10,6 @@ rustyline = "9.1.2"
 reqwest = "0.11.9"
 tokio = { version = "1.17.0", features = ["full"] }
 regex = "1.5.4"
-rodio = "0.14.0"
+rodio = "0.15.0"
 colored = "2.0.0"
+tempfile = "3.3.0"
