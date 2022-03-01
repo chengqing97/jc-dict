@@ -11,6 +11,10 @@ use wd_dict::{lookup, LookupResult, Voice};
 
 const VERSION: &str = "0.3.1";
 
+// To make color work on Windows:
+// reg add HKCU\Console /v VirtualTerminalLevel /t REG_DWORD /d 1
+// https://stackoverflow.com/questions/51680709/colored-text-output-in-powershell-console-using-ansi-vt100-codes
+
 async fn process(to_search: &str) -> std::result::Result<LookupResult, reqwest::Error> {
   let result = lookup(&to_search).await;
   match result {
