@@ -4,12 +4,8 @@ use rodio::{source::Source, Decoder, OutputStream};
 use rustyline::error::ReadlineError;
 use rustyline::Editor;
 use std::env;
-use std::fs::File;
-use std::io::copy;
-use std::io::BufReader;
 use std::io::Cursor;
 use std::result::Result;
-use tempfile::Builder;
 use tokio;
 use wd_dict::{lookup, LookupResult, Voice};
 
