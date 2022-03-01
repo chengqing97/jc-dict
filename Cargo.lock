@@ -1752,7 +1752,6 @@ dependencies = [
  "reqwest",
  "rodio",
  "rustyline",
- "tempfile",
  "tokio",
 ]
 
