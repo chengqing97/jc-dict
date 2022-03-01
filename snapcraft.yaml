@@ -1,0 +1,43 @@
+name: wd-dict
+version: 0.3.0
+summary: CLI 有道词典
+description: |
+  无道词典 / CLI 有道词典 / Terminal Youdao Dictionary
+  - English to Chinese lookup
+  - Chinese to English lookup
+  - Translation
+  - Pronunciation playback
+  - Similar words suggestions
+
+base: core18
+confinement: devmode
+
+parts:
+  wd-dict:
+    plugin: dump
+    source: ./wd.tar.xz
+    # build-packages:
+    #   - gcc
+    #   - libasound2-dev
+    #   - libopus-dev
+    #   - libortp-dev
+    stage-packages:
+      - libasound2
+      # - libopus0
+      # - libortp9
+
+apps:
+  wd:
+    command: wd
+    # plugs:
+    #   - audio-playback
+    #   - pulseaudio
+  wd-dict:
+    command: wd
+
+layout:
+  /usr/share/alsa:
+    bind: $SNAP/usr/share/alsa
+# sudo snap remove wd-dict && rm wd-dict_*.snap
+# snapcraft
+# sudo snap install wd-dict_*.snap --devmode --dangerous
