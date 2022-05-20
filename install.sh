@@ -1,6 +1,6 @@
 #!/bin/bash
 
-sudo cp wd-dict/wd_dict /bin/wd
-rm -rf wd-dict
-echo "wd-dict has been successfully installed!"
-echo "Type 'wd' to start."
+sudo cp jc-dictionary-cli/jc-dictionary-cli /bin/jc
+rm -rf jc-dictionary-cli
+echo "CLI简单粗暴实用小词典安装完成！"
+echo "输入'jc'开始实用"

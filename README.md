@@ -1,40 +1,51 @@
-# wd-dict
+# CLI 简单粗暴实用小词典
 
-CLI 有道词典
+————词典来源————
+
+线下词典: ECDICT
+
+线上词典: 有道词典
+
+人声发音: Cambridge Dictionary
 
 > Currently only works on Linux
 
 ## Installation
 
 ```
-git clone https://github.com/chengqing97/wd-dict.git && ./wd-dict/install.sh
+git clone https://github.com/chengqing97/jc-dictionary-cli.git && ./jc-dictionary-cli/install.sh
 ```
 
 ## Usage
 
-```
-wd hello
-```
-
-or interactive mode
+快速搜索:
 
 ```
-wd
+jc [搜索内容]
 ```
-Send '1' or '2' after searching something in interactive mode to play pronunciation.
 
-## To-dos
+互动模式:
 
-- [x] Navigate around typed words
-- [x] Pronunciation playback
-- [x] Chinese to English lookup
+```
+jc
+```
 
-## Known issues
-- <s>Crash when trying to play pronunciation that it can't find.</s> Fixed
+在互动模式中搜索后可发送: '1' 播放英式发音 '2' 播放美式发音 'i' 在有道词典搜索
 
+USAGE:
+
+```
+jc [OPTIONS]
+```
+
+OPTIONS:
+
+    -h --help     Show help message
+
+    -v --version  Show version
 
 ## Uninstall
 
 ```
-sudo rm /bin/wd
+sudo rm /bin/jc
 ```

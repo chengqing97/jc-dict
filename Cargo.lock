@@ -648,6 +648,19 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "1aab8fc367588b89dcee83ab0fd66b72b50b72fa1904d7095045ace2b0c81c35"
 
 [[package]]
+name = "jc-dictionary-cli"
+version = "0.4.0"
+dependencies = [
+ "colored",
+ "regex",
+ "reqwest",
+ "rodio",
+ "rusqlite",
+ "rustyline",
+ "tokio",
+]
+
+[[package]]
 name = "jni"
 version = "0.19.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -730,6 +743,7 @@ version = "0.24.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "898745e570c7d0453cc1fbc4a701eb6c662ed54e8fec8b7d14be137ebeeb9d14"
 dependencies = [
+ "cc",
  "pkg-config",
  "vcpkg",
 ]
@@ -1802,19 +1816,6 @@ name = "wasm-bindgen-shared"
 version = "0.2.79"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "3d958d035c4438e28c70e4321a2911302f10135ce78a9c7834c0cab4123d06a2"
-
-[[package]]
-name = "wd_dict"
-version = "0.3.1"
-dependencies = [
- "colored",
- "regex",
- "reqwest",
- "rodio",
- "rusqlite",
- "rustyline",
- "tokio",
-]
 
 [[package]]
 name = "web-sys"
