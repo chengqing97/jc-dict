@@ -1,5 +1,6 @@
 # CLI 简单粗暴实用小词典
 
+
 ————词典来源————
 
 线下词典: ECDICT
@@ -8,43 +9,35 @@
 
 人声发音: Cambridge Dictionary
 
-> Currently only works on Linux
 
-## Installation
+
+## 安装
 
 ```
 git clone https://github.com/chengqing97/jc-dict.git && ./jc-dict/install.sh
 ```
 
-## Usage
+## 使用
 
-快速搜索:
+### 快速搜索:
 
 ```
-jc [搜索内容]
+jc [要查询的内容]
 ```
 
-互动模式:
+### 互动模式:
 
 ```
 jc
 ```
 
-在互动模式中搜索后可发送: '1' 播放英式发音 '2' 播放美式发音 'i' 在有道词典搜索
+在互动模式中搜索后可发送: 
+- '1' 播放英式发音 
+- '2' 播放美式发音 
+- 'i' 在有道词典搜索
 
-USAGE:
 
-```
-jc [OPTIONS]
-```
-
-OPTIONS:
-
-    -h --help     Show help message
-
-    -v --version  Show version
-
-## Uninstall
+## 卸载
 
 ```
 sudo rm /bin/jc
