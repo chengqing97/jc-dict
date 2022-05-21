@@ -9,7 +9,7 @@ impl Ecdict {
     pub fn new() -> Self {
         Self {
             db: Connection::open_with_flags(
-                "opt/jc-dict/database/stardict.db",
+                "/opt/jc-dict/database/stardict.db",
                 OpenFlags::SQLITE_OPEN_READ_ONLY,
             )
             .unwrap(),

@@ -48,4 +48,5 @@ OPTIONS:
 
 ```
 sudo rm /bin/jc
+sudo rm -r /opt/jc-dict
 ```
