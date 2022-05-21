@@ -1,5 +1,4 @@
 use crate::{LookupError, LookupResult};
-use dirs;
 use rusqlite::{Connection, OpenFlags, OptionalExtension};
 
 pub struct Ecdict {
@@ -10,9 +9,7 @@ impl Ecdict {
     pub fn new() -> Self {
         Self {
             db: Connection::open_with_flags(
-                dirs::home_dir()
-                    .unwrap()
-                    .join("jc-dict/database/stardict.db"),
+                "opt/jc-dict/database/stardict.db",
                 OpenFlags::SQLITE_OPEN_READ_ONLY,
             )
             .unwrap(),
