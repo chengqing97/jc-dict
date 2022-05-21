@@ -35,8 +35,8 @@ impl Ecdict {
                     Err(_) => None,
                 };
                 Ok(LookupResult {
-                    uk_phonetic: None,
-                    us_phonetic: phonetic,
+                    uk_phonetic: phonetic,
+                    us_phonetic: None,
                     definition: row.get(1)?,
                     suggestions: None,
                 })
