@@ -13,7 +13,7 @@
 ## Installation
 
 ```
-git clone https://github.com/chengqing97/jc-dictionary-cli.git && ./jc-dictionary-cli/install.sh
+git clone https://github.com/chengqing97/jc-dict.git && ./jc-dict/install.sh
 ```
 
 ## Usage

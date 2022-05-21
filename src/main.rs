@@ -1,4 +1,4 @@
-use jc_dictionary_cli::{Accent, Lookup, Mode};
+use jc_dict::{Accent, Lookup, Mode};
 use rustyline::error::ReadlineError;
 use rustyline::Editor;
 use std::env;

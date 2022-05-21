@@ -92,7 +92,6 @@ impl Lookup {
             }
             Err(ref error) => {
                 self.print_error(&error.message);
-                // println!("{}\n", error.message);
             }
         }
     }
@@ -120,7 +119,7 @@ impl Lookup {
 
         self.print_result();
 
-        if mode != Mode::NoVoice {
+        if mode == Mode::Default {
             let voice_result = cambridge::get_playback_url(to_search).await;
             if let Ok(voice_result) = voice_result {
                 self.voice = voice_result;

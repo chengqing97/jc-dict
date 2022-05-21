@@ -1,5 +1,6 @@
 use crate::{LookupError, LookupResult};
-use rusqlite::{Connection, OptionalExtension};
+use dirs;
+use rusqlite::{Connection, OpenFlags, OptionalExtension};
 
 pub struct Ecdict {
     db: Connection,
@@ -8,7 +9,13 @@ pub struct Ecdict {
 impl Ecdict {
     pub fn new() -> Self {
         Self {
-            db: Connection::open("../database/stardict.db").unwrap(),
+            db: Connection::open_with_flags(
+                dirs::home_dir()
+                    .unwrap()
+                    .join("jc-dict/database/stardict.db"),
+                OpenFlags::SQLITE_OPEN_READ_ONLY,
+            )
+            .unwrap(),
         }
     }
 
@@ -21,7 +28,13 @@ impl Ecdict {
         let result = statement
             .query_row([to_search], |row| {
                 let phonetic: Option<String> = match row.get::<_, String>(0) {
-                    Ok(value) => Some(format!("[{}]", value)),
+                    Ok(value) => {
+                        if value.is_empty() {
+                            None
+                        } else {
+                            Some(format!("[{}]", value))
+                        }
+                    }
                     Err(_) => None,
                 };
                 Ok(LookupResult {

@@ -1,4 +1,4 @@
-name: jc-dictionary-cli
+name: jc-dict
 version: 0.4.0
 summary: CLI 有道词典
 description: |
@@ -13,7 +13,7 @@ base: core18
 confinement: devmode
 
 parts:
-  jc-dictionary-cli:
+  jc-dict:
     plugin: dump
     source: ./jc.tar.xz
     # build-packages:
@@ -33,12 +33,12 @@ apps:
       # - alsa
       # - audio-playback
       # - pulseaudio
-  jc-dictionary-cli:
+  jc-dict:
     command: jc
 
 layout:
   /usr/share/alsa:
     bind: $SNAP/usr/share/alsa
-# sudo snap remove jc-dictionary-cli && rm jc-dictionary-cli_*.snap
+# sudo snap remove jc-dict && rm jc-dictionary-cli_*.snap
 # snapcraft
 # sudo snap install jc-dictionary-cli_*.snap --devmode --dangerous
