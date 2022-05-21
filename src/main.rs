@@ -1,150 +1,92 @@
-use colored::*;
-use reqwest;
-use rodio::{source::Source, Decoder, OutputStream};
+use jc_dict::{Accent, Lookup, Mode};
 use rustyline::error::ReadlineError;
 use rustyline::Editor;
 use std::env;
-use std::io::Cursor;
-use std::result::Result;
 use tokio;
-use wd_dict::{lookup, LookupResult, Voice};
 
-const VERSION: &str = "0.3.1";
-
-// To make color work on Windows:
-// reg add HKCU\Console /v VirtualTerminalLevel /t REG_DWORD /d 1
-// https://stackoverflow.com/questions/51680709/colored-text-output-in-powershell-console-using-ansi-vt100-codes
-
-async fn process(to_search: &str) -> std::result::Result<LookupResult, reqwest::Error> {
-  let result = lookup(&to_search).await;
-  match result {
-    Ok(ref result) => {
-      let mut pronunciation = String::new();
-      if let Some(ref uk_pronunciation) = result.uk_pronunciation {
-        pronunciation.push_str(&format!("英 {}  ", &uk_pronunciation));
-      }
-      if let Some(ref us_pronunciation) = result.us_pronunciation {
-        pronunciation.push_str(&format!("美 {}", &us_pronunciation));
-      }
-      if pronunciation.len() > 0 {
-        println!("{}", pronunciation.cyan());
-      }
-      if let Some(ref definition) = result.definition {
-        println!("{}\n", definition);
-      }
-
-      if let Some(ref suggestions) = result.suggestions {
-        println!("Are you looking for");
-        for item in suggestions {
-          println!("{}: {}", item.word.magenta(), item.definition);
-        }
-        println!();
-      }
-
-      if result.suggestions == None
-        && result.definition == None
-        && result.uk_pronunciation == None
-        && result.us_pronunciation == None
-      {
-        println!("{}\n", "No result".red());
-      }
-    }
-    Err(ref error) => {
-      println!("{}\n", error);
-    }
-  }
-  result
-}
-
-async fn play_pronunciation(url: &str) -> Result<(), reqwest::Error> {
-  // Reference: https://stackoverflow.com/questions/63463503/playing-audio-from-url-in-rust
-  let (_stream, stream_handle) = OutputStream::try_default().expect("Initialize error");
-  let response = reqwest::get(url).await?;
-  let cursor = Cursor::new(response.bytes().await.expect("Get bytes error"));
-  let source = Decoder::new(cursor).expect("Decode error");
-  let _play = stream_handle.play_raw(source.convert_samples());
-  std::thread::sleep(std::time::Duration::from_millis(1500));
-  Ok(())
-}
+const VERSION: &str = env!("CARGO_PKG_VERSION");
 
 #[tokio::main]
 async fn main() {
-  let mut args: Vec<String> = env::args().collect();
+    let mut args: Vec<String> = env::args().collect();
 
-  if args.contains(&String::from("-h")) | args.contains(&String::from("--help")) {
-    print_help();
-  } else if args.contains(&String::from("-v")) | args.contains(&String::from("--version")) {
-    println!("{}", VERSION);
-  } else if args.len() > 1 {
-    args.remove(0);
-    let to_search = args.join(" ");
-    let _result = process(&to_search).await;
-  } else {
-    let mut rl = Editor::<()>::new();
-    let mut voice = Voice::new();
-    let mut is_first_search = true;
-    loop {
-      let readline = rl.readline("~ ");
-      match readline {
-        Ok(input) => {
-          if input.is_empty() {
-            continue;
-          } else if input == "1" || input == "2" {
-            if is_first_search {
-              println!("Search something first and then send '1' or '2' to play pronunciation\n");
-            } else if voice.uk != None && input == "1" {
-              play_pronunciation(&voice.uk.as_ref().unwrap())
-                .await
-                .unwrap_or_else(|e| println!("{}", e));
-            } else if voice.us != None && input == "2" {
-              play_pronunciation(&voice.us.as_ref().unwrap())
-                .await
-                .unwrap_or_else(|e| println!("{}", e));
-            } else {
-              println!(
-                "{}",
-                "No pronunciation playback found for this word\n".red()
-              );
+    if args.contains(&String::from("-h")) | args.contains(&String::from("--help")) {
+        print_help();
+    } else if args.contains(&String::from("-v")) | args.contains(&String::from("--version")) {
+        println!("{}", VERSION);
+    } else if args.len() > 1 {
+        args.remove(0);
+        let to_search = args.join(" ");
+        let mut lookup = Lookup::new();
+        lookup.get(&to_search, Mode::NoVoice).await;
+    } else {
+        let mut rl = Editor::<()>::new();
+        let mut lookup = Lookup::new();
+        loop {
+            let readline = rl.readline("~ ");
+            match readline {
+                Ok(input) => {
+                    if input.is_empty() {
+                        continue;
+                    } else if input == "1" {
+                        lookup.play(Accent::Uk).await;
+                    } else if input == "2" {
+                        lookup.play(Accent::Us).await;
+                    } else if input == "i" {
+                        match rl.history().last() {
+                            Some(previous_search) => {
+                                println!("{}", previous_search);
+                                lookup.get(previous_search, Mode::Youdao).await
+                            }
+                            None => {
+                                rl.add_history_entry(input.as_str());
+                                lookup.get(&input, Mode::Default).await;
+                            }
+                        }
+                    } else {
+                        rl.add_history_entry(input.as_str());
+                        lookup.get(&input, Mode::Default).await;
+                    }
+                }
+                Err(ReadlineError::Interrupted) => {
+                    break;
+                }
+                Err(error) => {
+                    println!("Error: {:?}\n", error);
+                }
             }
-          } else {
-            rl.add_history_entry(input.as_str());
-            is_first_search = false;
-            let result = process(&input).await;
-            if let Ok(_) = result {
-              let voice_result = Voice::new().get_url(&input).await;
-              if let Ok(voice_result) = voice_result {
-                voice = voice_result;
-              }
-            }
-          }
         }
-        Err(ReadlineError::Interrupted) => {
-          break;
-        }
-        Err(error) => {
-          println!("Error: {:?}\n", error);
-        }
-      }
     }
-  }
 }
 
 fn print_help() {
-  println!(
-    "CLI 有道词典 (v{})
+    println!(
+        "CLI 简单粗暴实用小词典 (v{})
+        
+快速搜索: 
+    jc [搜索内容]
 
-Interactive mode: 
-wd
+互动模式: 
+    jc
 
-Quick search: 
-wd word you want to search
+在互动模式中搜索后可发送:
+    '1' 播放英式发音
+    '2' 播放美式发音
+    'i' 在有道词典搜索
 
-Send '1' or '2' after searching something in interactive mode to play pronunciation 
+USAGE:
+    jc [OPTIONS]
 
-Flags:
--h --help     Show help message
--v --version  Show version
+OPTIONS:
+    -h --help     Show help message
+    -v --version  Show version
+
+
+————词典来源————
+线下词典: ECDICT
+线上词典: 有道词典
+人声发音: Cambridge Dictionary
     ",
-    VERSION
-  );
+        VERSION
+    );
 }

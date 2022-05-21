@@ -1,5 +1,5 @@
-name: wd-dict
-version: 0.3.1
+name: jc-dict
+version: 0.4.0
 summary: CLI 有道词典
 description: |
   无道词典 / CLI 有道词典 / Terminal Youdao Dictionary
@@ -13,9 +13,9 @@ base: core18
 confinement: devmode
 
 parts:
-  wd-dict:
+  jc-dict:
     plugin: dump
-    source: ./wd.tar.xz
+    source: ./jc.tar.xz
     # build-packages:
     #   - gcc
     #   - libasound2-dev
@@ -27,18 +27,18 @@ parts:
       # - libortp9
 
 apps:
-  wd:
-    command: wd
+  jc:
+    command: jc
     plugs:
       # - alsa
       # - audio-playback
       # - pulseaudio
-  wd-dict:
-    command: wd
+  jc-dict:
+    command: jc
 
 layout:
   /usr/share/alsa:
     bind: $SNAP/usr/share/alsa
-# sudo snap remove wd-dict && rm wd-dict_*.snap
+# sudo snap remove jc-dict && rm jc-dictionary-cli_*.snap
 # snapcraft
-# sudo snap install wd-dict_*.snap --devmode --dangerous
+# sudo snap install jc-dictionary-cli_*.snap --devmode --dangerous
