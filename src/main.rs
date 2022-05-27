@@ -20,6 +20,8 @@ async fn main() {
         let mut lookup = Lookup::new();
         lookup.get(&to_search, Mode::NoVoice).await;
     } else {
+        clear_terminal();
+        print_welcome();
         let mut rl = Editor::<()>::new();
         let mut lookup = Lookup::new();
         loop {
@@ -87,6 +89,23 @@ OPTIONS:
 线上词典: 有道词典
 人声发音: Cambridge Dictionary
     ",
+        VERSION
+    );
+}
+
+fn clear_terminal() {
+    print!("{esc}[2J{esc}[1;1H", esc = 27 as char);
+}
+
+fn print_welcome() {
+    println!(
+        "欢迎使用简单粗暴实用小词典 v{}
+    
+查找词条后发送:
+'1' 播放英式发音
+'2' 播放美式发音
+'i' 在有道词典搜索
+",
         VERSION
     );
 }

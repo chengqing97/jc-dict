@@ -39,3 +39,13 @@ jc
 ```
 sudo rm /bin/jc && sudo rm -rf /opt/jc-dict
 ```
+
+## Issues
+
+- [ ] It becomes almost unusable when getting voice takes long time
+- [ ] voice playback has fixed length
+- [ ] Cannot cancel requests
+
+## Dev
+
+- [x] Clear terminal when program starts
