@@ -45,6 +45,9 @@ sudo rm /bin/jc && sudo rm -rf /opt/jc-dict
 - [ ] It becomes almost unusable when getting voice takes long time
 - [ ] voice playback has fixed length
 - [ ] Cannot cancel requests
+- [ ] git clone won't download the database zip file
+- [ ] install script needs to be able to handle error
+- [ ] need to make sure dependecies are installed: libasound2, unzip
 
 ## Dev
 
